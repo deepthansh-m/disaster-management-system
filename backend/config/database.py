@@ -1,24 +1,14 @@
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, declarative_base
-import os
-from dotenv import load_dotenv
+from sqlalchemy.orm import sessionmaker
+from backend.config.environment import DATABASE_URL
 
-# Load environment variables from .env file
-load_dotenv()
-
-# Load database configuration from environment variables
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://user:password@localhost/disaster_management")
-
-# Create the SQLAlchemy engine for PostgreSQL
+# Create the database engine
 engine = create_engine(DATABASE_URL)
 
-# Create a sessionmaker
+# Create a database session factory
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-# Base class for models
-Base = declarative_base()
-
-# Dependency to get DB session
+# Dependency to get a database session
 def get_db():
     db = SessionLocal()
     try:
