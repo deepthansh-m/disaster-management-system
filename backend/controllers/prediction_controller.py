@@ -1,16 +1,19 @@
 from flask import Blueprint, request, jsonify
 from backend.ml.models.disaster_predictor import DisasterPredictor
-from backend.database import get_db
-from backend.models import DisasterHistory
+from backend.config import get_db
+from backend.ml.models import DisasterHistory
 from sqlalchemy.exc import SQLAlchemyError
+from flask_cors import CORS
 
-prediction_bp = Blueprint('prediction', __name__, url_prefix='/api/predictions')
+prediction_bp = Blueprint('prediction', __name__, url_prefix='/api/predictions/')
 
 @prediction_bp.route('/predict', methods=['POST'])
 def predict_disaster():
     """Predict disaster likelihood."""
     data = request.json
     try:
+        db_session = get_db()
+        # Rest of the code...
         location = data.get('location')
         year = data.get('year')
 

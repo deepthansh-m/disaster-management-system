@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from backend.services.openweather_service import get_weather_data
 
 weather_bp = Blueprint('weather', __name__, url_prefix='/api/weather')

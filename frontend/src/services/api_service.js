@@ -1,27 +1,75 @@
-const API_BASE_URL = "http://localhost:5000/api";
+const BASE_URL = 'http://localhost:5000/api';
 
-export const fetchWeatherData = async (location) => {
-    try {
-        const response = await fetch(`${API_BASE_URL}/weather/current?location=${location}`);
-        return response.json();
-    } catch (error) {
-        console.error("Error fetching weather data:", error);
-        return null;
+// Error handling wrapper
+const handleResponse = async (response) => {
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'API request failed');
     }
+    return response.json();
 };
 
-export const fetchPredictionData = async (data) => {
-    try {
-        const response = await fetch(`${API_BASE_URL}/predictions/predict`, {
-            method: "POST",
+// API endpoints
+const apiService = {
+    // Disaster endpoints
+    getDisasters: async () => {
+        const response = await fetch(`${BASE_URL}/disasters/`, {
+            method: 'GET',
+            credentials: 'include', // Add credentials for CORS
             headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
+                'Content-Type': 'application/json'
+            }
         });
-        return response.json();
-    } catch (error) {
-        console.error("Error fetching prediction data:", error);
-        return null;
+        return handleResponse(response);
+    },
+
+    addDisaster: async (disasterData) => {
+        const response = await fetch(`${BASE_URL}/disasters/`, {
+            method: 'POST',
+            credentials: 'include', // Add credentials for CORS
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(disasterData)
+        });
+        return handleResponse(response);
+    },
+
+    // Prediction endpoints
+    getPrediction: async (location) => {
+        const response = await fetch(`${BASE_URL}/predictions?location=${encodeURIComponent(location)}`, {
+            method: 'GET',
+            credentials: 'include', // Add credentials for CORS
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        return handleResponse(response);
+    },
+
+    submitPrediction: async (predictionData) => {
+        const response = await fetch(`${BASE_URL}/predictions/predict/`, {
+            method: 'POST',
+            credentials: 'include', // Add credentials for CORS
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(predictionData)
+        });
+        return handleResponse(response);
+    },
+
+    // Weather endpoints
+    getWeatherData: async (location) => {
+        const response = await fetch(`${BASE_URL}/weather?location=${encodeURIComponent(location)}`, {
+            method: 'GET',
+            credentials: 'include', // Add credentials for CORS
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        return handleResponse(response);
     }
 };
+
+export default apiService;

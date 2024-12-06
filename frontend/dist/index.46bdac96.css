@@ -1,0 +1,41 @@
+body {
+  color: #333;
+  background-color: #f4f4f9;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+h1, h2, h3 {
+  color: #0056b3;
+}
+
+.homepage, .map-page, .details-page {
+  padding: 20px;
+}
+
+.search-bar {
+  margin-bottom: 20px;
+  display: flex;
+}
+
+.search-bar input {
+  border: 1px solid #ccc;
+  border-radius: 4px 0 0 4px;
+  flex: 1;
+  padding: 10px;
+}
+
+.search-bar button {
+  color: #fff;
+  cursor: pointer;
+  background-color: #007bff;
+  border: none;
+  border-radius: 0 4px 4px 0;
+  padding: 10px 20px;
+}
+
+.search-bar button:hover {
+  background-color: #0056b3;
+}
+/*# sourceMappingURL=index.46bdac96.css.map */

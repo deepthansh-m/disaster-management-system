@@ -1,17 +1,13 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from backend.config.environment import DATABASE_URL
+# backend/config/database.py
+from flask_sqlalchemy import SQLAlchemy
+from dotenv import load_dotenv
+import os
 
-# Create the database engine
-engine = create_engine(DATABASE_URL)
+load_dotenv()
 
-# Create a database session factory
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+# Initialize Flask-SQLAlchemy
+db = SQLAlchemy()
 
-# Dependency to get a database session
 def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+    """Get database session."""
+    return db.session

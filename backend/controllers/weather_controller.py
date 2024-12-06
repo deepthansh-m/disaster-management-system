@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, request
 from backend.services.openweather_service import get_weather_data
+from flask_cors import CORS
 
 weather_bp = Blueprint('weather', __name__, url_prefix='/api/weather')
 
