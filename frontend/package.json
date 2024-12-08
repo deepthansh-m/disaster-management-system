@@ -13,6 +13,7 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "leaflet": "^1.9.4",
     "parcel": "^2.13.2",
     "process": "^0.11.10"
   }
