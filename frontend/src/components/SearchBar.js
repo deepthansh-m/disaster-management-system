@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
-function SearchBar({ location, setLocation }) {
+function SearchBar({ location, setLocation, fetchPrediction }) {
   const [query, setQuery] = useState("");
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleSearch = async () => {
     if (!query.trim()) return;
@@ -14,11 +16,27 @@ function SearchBar({ location, setLocation }) {
 
     if (data.length > 0) {
       const { lat, lon, display_name } = data[0];
-      setLocation({
+      const newLocation = {
         name: display_name,
         lat: parseFloat(lat),
         lng: parseFloat(lon),
-      });
+      };
+      setLocation(newLocation);
+
+      // Call the prediction API with the formatted location
+      try {
+        const prediction = await fetchPrediction({
+          latitude: newLocation.lat,
+          longitude: newLocation.lng,
+          location: display_name,
+        });
+
+        // Navigate to the details page and pass the prediction data via state
+        navigate(`/details`, { state: { prediction } });
+      } catch (error) {
+        console.error("Error fetching prediction:", error);
+        alert("Failed to fetch prediction data.");
+      }
     } else {
       alert("Location not found");
     }

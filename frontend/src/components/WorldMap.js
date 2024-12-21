@@ -40,13 +40,25 @@ function WorldMap({ location, setLocation }) {
 
       // Update the marker
       if (markerRef.current) {
-        map.removeLayer(markerRef.current);
+        map.removeLayer(markerRef.current); // Remove previous marker
       }
+
+      // Create the new marker
       markerRef.current = L.marker([lat, lng], { icon: pinIcon }).addTo(map);
+
+      // Bind the popup with location details
+      markerRef.current
+        .bindPopup(`
+          <strong>Location: </strong> ${placeName}<br />
+          <strong>Latitude: </strong> ${lat.toFixed(4)}<br />
+          <strong>Longitude: </strong> ${lng.toFixed(4)}
+        `)
+        .openPopup();
     });
 
+    // Cleanup the map on component unmount
     return () => {
-      map.remove(); // Clean up the map on unmount
+      map.remove();
     };
   }, [setLocation]);
 
@@ -59,9 +71,10 @@ function WorldMap({ location, setLocation }) {
 
       // Update the marker
       if (markerRef.current) {
-        map.removeLayer(markerRef.current);
+        map.removeLayer(markerRef.current); // Remove previous marker
       }
 
+      // Create the new marker
       const pinIcon = L.icon({
         iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png",
         iconSize: [25, 41],
@@ -70,6 +83,15 @@ function WorldMap({ location, setLocation }) {
       });
 
       markerRef.current = L.marker([location.lat, location.lng], { icon: pinIcon }).addTo(map);
+
+      // Bind the popup with location details
+      markerRef.current
+        .bindPopup(`
+          <strong>Location: </strong> ${location.name}<br />
+          <strong>Latitude: </strong> ${location.lat.toFixed(4)}<br />
+          <strong>Longitude: </strong> ${location.lng.toFixed(4)}
+        `)
+        .openPopup();
     }
   }, [location]);
 
